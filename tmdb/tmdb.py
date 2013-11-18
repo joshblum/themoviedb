@@ -10,8 +10,6 @@ __author__ = "doganaydin"
 __version__ = "1.0b"
 
 BASE_URL = "https://api.themoviedb.org/3"
-URLS = "urls"
-API = "api"
 
 try:
     import simplejson
@@ -25,36 +23,53 @@ config = {
     'base_url': BASE_URL,
 }
 
+
 def configure(api_key, language='en'):
     config['apikey'] = api_key
     config['language'] = language
-    config[URLS] = {
-        'movie.search': "%(base_url)s/search/movie?query=%%s&api_key=%(apikey)s&page=%%s" % (config),
-        'movie.info': "%(base_url)s/movie/%%s?api_key=%(apikey)s" % (config),
-        'people.search': "%(base_url)s/search/person?query=%%s&api_key=%(apikey)s&page=%%s" % (config),
-        'collection.info': "%(base_url)s/collection/%%s&api_key=%(apikey)s" % (config),
-        'movie.alternativetitles': "%(base_url)s/movie/%%s/alternative_titles?api_key=%(apikey)s" % (config),
-        'movie.casts': "%(base_url)s/movie/%%s/casts?api_key=%(apikey)s" % (config),
-        'movie.images': "%(base_url)s/movie/%%s/images?api_key=%(apikey)s" % (config),
-        'movie.keywords': "%(base_url)s/movie/%%s/keywords?api_key=%(apikey)s" % (config),
-        'movie.releases': "%(base_url)s/movie/%%s/releases?api_key=%(apikey)s" % (config),
-        'movie.trailers': "%(base_url)s/movie/%%s/trailers?api_key=%(apikey)s" % (config),
-        'movie.translations': "%(base_url)s/movie/%%s/translations?api_key=%(apikey)s" % (config),
-        'person.info': "%(base_url)s/person/%%s?api_key=%(apikey)s&append_to_response=images,credits" % (config),
-        'person.popular': "%(base_url)s/person/popular?api_key=%(apikey)s&page=%%s" % (config),
-        'latestmovie': "%(base_url)s/latest/movie?api_key=%(apikey)s" % (config),
-        'config': "%(base_url)s/configuration?api_key=%(apikey)s" % (config),
-        'request.token': "%(base_url)s/authentication/token/new?api_key=%(apikey)s" % (config),
-        'session.id': "%(base_url)s/authentication/session/new?api_key=%(apikey)s&request_token=%%s" % (config),
-        'movie.add.rating': "%(base_url)s/movie/%%s/rating?session_id=%%s&api_key=%(apikey)s" % (config),
-    }
-    config[API] = {
-        'backdrop.sizes': "",
-        'base.url': "",
-        'poster.sizes': "",
-        'profile.sizes': "",
-        'session.id': "",
-    }
+    config['urls'] = {}
+    config['urls'][
+        'movie.search'] = "%(base_url)s/search/movie?query=%%s&api_key=%(apikey)s&page=%%s" % (config)
+    config['urls'][
+        'movie.info'] = "%(base_url)s/movie/%%s?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'people.search'] = "%(base_url)s/search/person?query=%%s&api_key=%(apikey)s&page=%%s" % (config)
+    config['urls'][
+        'collection.info'] = "%(base_url)s/collection/%%s&api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.alternativetitles'] = "%(base_url)s/movie/%%s/alternative_titles?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.casts'] = "%(base_url)s/movie/%%s/casts?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.images'] = "%(base_url)s/movie/%%s/images?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.keywords'] = "%(base_url)s/movie/%%s/keywords?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.releases'] = "%(base_url)s/movie/%%s/releases?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.trailers'] = "%(base_url)s/movie/%%s/trailers?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'movie.translations'] = "%(base_url)s/movie/%%s/translations?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'person.info'] = "%(base_url)s/person/%%s?api_key=%(apikey)s&append_to_response=images,credits" % (config)
+    config['urls'][
+        'person.popular'] = "%(base_url)s/person/popular?api_key=%(apikey)s&page=%%s" % (config)
+    config['urls'][
+        'latestmovie'] = "%(base_url)s/latest/movie?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'config'] = "%(base_url)s/configuration?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'request.token'] = "%(base_url)s/authentication/token/new?api_key=%(apikey)s" % (config)
+    config['urls'][
+        'session.id'] = "%(base_url)s/authentication/session/new?api_key=%(apikey)s&request_token=%%s" % (config)
+    config['urls'][
+        'movie.add.rating'] = "%(base_url)s/movie/%%s/rating?session_id=%%s&api_key=%(apikey)s" % (config)
+    config['api'] = {}
+    config['api']['backdrop.sizes'] = ""
+    config['api']['base.url'] = ""
+    config['api']['poster.sizes'] = ""
+    config['api']['profile.sizes'] = ""
+    config['api']['session.id'] = ""
 
 
 class Core(object):
@@ -73,11 +88,11 @@ class Core(object):
         return False
 
     def update_configuration(self):
-        c = self.getJSON(config[URLS]['config'])
-        config[API]['backdrop.sizes'] = c['images']['backdrop_sizes']
-        config[API]['base.url'] = c['images']['base_url']
-        config[API]['poster.sizes'] = c['images']['poster_sizes']
-        config[API]['profile.sizes'] = c['images']['profile_sizes']
+        c = self.getJSON(config['urls']['config'])
+        config['api']['backdrop.sizes'] = c['images']['backdrop_sizes']
+        config['api']['base.url'] = c['images']['base_url']
+        config['api']['poster.sizes'] = c['images']['poster_sizes']
+        config['api']['profile.sizes'] = c['images']['profile_sizes']
         return "ok"
 
     def backdrop_sizes(self, img_size):
@@ -93,13 +108,13 @@ class Core(object):
         return size_list[img_size]
 
     def request_token(self):
-        req = self.getJSON(config[URLS]['request.token'])
+        req = self.getJSON(config['urls']['request.token'])
         r = req["request_token"]
         return {"url": "http://themoviedb.org/authenticate/%s" % r, "request_token": r}
 
     def session_id(self, token):
-        sess = self.getJSON(config[URLS]['session.id'] % token)
-        config[API]['session.id'] = sess["session_id"]
+        sess = self.getJSON(config['urls']['session.id'] % token)
+        config['api']['session.id'] = sess["session_id"]
         return sess["session_id"]
 
 
@@ -111,13 +126,13 @@ class Movies(Core):
         self.searched = title
         title = self.escape(title)
         self.movies = self.getJSON(
-            config[URLS]['movie.search'] % (title, str(1)), language=language)
+            config['urls']['movie.search'] % (title, str(1)), language=language)
         pages = self.movies["total_pages"]
         if not self.limit:
             if int(pages) > 1:                  #
                 for i in range(2, int(pages) + 1):  # Thanks @tBuLi
                     self.movies["results"].extend(
-                        self.getJSON(config[URLS]['movie.search'] % (title, str(i)), language=language)["results"])
+                        self.getJSON(config['urls']['movie.search'] % (title, str(i)), language=language)["results"])
 
     def __iter__(self):
         for i in self.movies["results"]:
@@ -164,7 +179,7 @@ class Movie(Core):
         self.movie_id = movie_id
         self.update_configuration()
         self.movies = self.getJSON(
-            config[URLS]['movie.info'] % self.movie_id, language=language)
+            config['urls']['movie.info'] % self.movie_id, language=language)
 
     def is_adult(self):
         return self.movies['adult']
@@ -181,7 +196,7 @@ class Movie(Core):
             img_path = self.movies["belongs_to_collection"]["backdrop_path"]
         except KeyError:
             return
-        return config[API]['base.url'] + self.poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.poster_sizes(img_size) + img_path
 
     # Sizes = s->w92 m->w185 l->w500 o->original(default)
     def get_collection_poster(self, img_size="o"):
@@ -189,7 +204,7 @@ class Movie(Core):
             img_path = self.movies["belongs_to_collection"]["poster_path"]
         except KeyError:
             return
-        return config[API]['base.url'] + self.poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.poster_sizes(img_size) + img_path
 
     def get_budget(self):
         return self.movies['budget']
@@ -251,7 +266,7 @@ class Movie(Core):
         img_path = self.movies.get("backdrop_path")
         if not img_path:
             return
-        return config[API]['base.url'] + self.backdrop_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.backdrop_sizes(img_size) + img_path
 
     def get_original_title(self):
         return self.movies["original_title"]
@@ -270,10 +285,10 @@ class Movie(Core):
         img_path = self.movies.get("poster_path")
         if not img_path:
             return
-        return config[API]['base.url'] + self.poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.poster_sizes(img_size) + img_path
 
     def get_trailers(self, language=None):
-        return self.getJSON(config[URLS]['movie.trailers'] % self.movie_id, language=language)
+        return self.getJSON(config['urls']['movie.trailers'] % self.movie_id, language=language)
 
     def add_rating(self, value):
         if isinstance(value, float) or isinstance(value, int):
@@ -282,7 +297,7 @@ class Movie(Core):
             sess_id = config["api"]["session.id"]
             data = {"value": float(value)}
             req = requests.post(
-                config[URLS]['movie.add.rating'] % (self.movie_id, sess_id), data=data)
+                config['urls']['movie.add.rating'] % (self.movie_id, sess_id), data=data)
             res = simplejson.loads(bytes(req.content).decode())
             if res['status_message'] == "Success":
                 return True
@@ -298,13 +313,13 @@ class People(Core):
         self.update_configuration()
         people_name = self.escape(people_name)
         self.people = self.getJSON(
-            config[URLS]['people.search'] % (people_name, str(1)), language=language)
+            config['urls']['people.search'] % (people_name, str(1)), language=language)
         pages = self.people["total_pages"]
         if not self.limit:
             if int(pages) > 1:
                 for i in range(2, int(pages) + 1):
                     self.people["results"].extend(
-                        self.getJSON(config[URLS]['people.search'] % (people_name, str(i)), language=language)["results"])
+                        self.getJSON(config['urls']['people.search'] % (people_name, str(i)), language=language)["results"])
 
     def __iter__(self):
         for i in self.people["results"]:
@@ -322,20 +337,19 @@ class People(Core):
         for i in self.people["results"]:
             yield i
 
-
 class Popular(Core):
 
     def __init__(self, limit=False, language=None):
         self.limit = limit
         self.update_configuration()
         self.people = self.getJSON(
-            config[URLS]['person.popular'] % str(1), language=language)
+            config['urls']['people.popular'] % str(1), language=language)
         pages = self.people["total_pages"]
         if not self.limit:
             if int(pages) > 1:
                 for i in range(2, int(pages) + 1):
                     self.people["results"].extend(
-                        self.getJSON(config[URLS]['person.popular'] % str(i), language=language)["results"])
+                        self.getJSON(config['urls']['people.popular'] % str(i), language=language)["results"])
 
     def __iter__(self):
         for i in self.people["results"]:
@@ -360,7 +374,7 @@ class Person(Core):
         self.person_id = person_id
         self.update_configuration()
         self.person = self.getJSON(
-            config[URLS]['person.info'] % self.person_id, language=language)
+            config['urls']['person.info'] % self.person_id, language=language)
 
     def get_id(self):
         return self.person_id
@@ -376,7 +390,7 @@ class Person(Core):
         img_path = self.person.get("profile_path")
         if not img_path:
             return
-        return config[API]['base.url'] + self.profile_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.profile_sizes(img_size) + img_path
 
     def get_biography(self):
         return self.person['biography']
@@ -415,7 +429,7 @@ class Person(Core):
                 'profiles'][image_index]['file_path']
         except KeyError:
             return
-        return config[API]['base.url'] + self.poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + self.poster_sizes(img_size) + img_path
 
     def cast(self):
         for c in self.person["credits"]["cast"]:
@@ -451,7 +465,7 @@ class Cast:
         img_path = self.cast.get("poster_path")
         if not img_path:
             return
-        return config[API]['base.url'] + Core().poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + Core().poster_sizes(img_size) + img_path
 
 
 class Crew:
@@ -482,4 +496,4 @@ class Crew:
         img_path = self.crew.get("poster_path")
         if not img_path:
             return
-        return config[API]['base.url'] + Core().poster_sizes(img_size) + img_path
+        return config['api']['base.url'] + Core().poster_sizes(img_size) + img_path
